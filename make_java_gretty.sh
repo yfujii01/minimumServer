@@ -1,3 +1,4 @@
+rm -rf sample_java_gretty
 mkdir sample_java_gretty
 cd sample_java_gretty
 

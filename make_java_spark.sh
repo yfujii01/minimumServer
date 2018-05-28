@@ -1,3 +1,4 @@
+rm -rf./sample_java_spark
 mkdir ./sample_java_spark
 cd sample_java_spark
 
