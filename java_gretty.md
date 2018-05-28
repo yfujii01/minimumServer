@@ -1,4 +1,4 @@
-# minimumJava
+# java gretty
 
 gradleとjettyを利用したwebサーバーの最小構成
 

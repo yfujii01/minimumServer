@@ -1,4 +1,4 @@
-# minimumNodeJs
+# nodejs express
 
 npmとexpressを利用したwebサーバーの最小構成
 

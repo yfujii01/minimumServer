@@ -1,4 +1,4 @@
-# minimumPython
+# python flask
 
 pipとflaskを利用したwebサーバーの最小構成
 
