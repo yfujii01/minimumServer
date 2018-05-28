@@ -4,3 +4,4 @@
 
 1. [java](minimumJava.md)
 1. [nodejs](minimumNodejs.md)
+1. [python](minimumPython.md)
