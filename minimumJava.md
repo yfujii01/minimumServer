@@ -18,7 +18,14 @@ gradleとjettyを利用したwebサーバーの最小構成
 	mkdir -p ./src/main/webapp
 	echo 'hello world!!' > ./src/main/webapp/index.html
 
-	echo -e "apply plugin: 'war'\napply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'\n\ngretty {\n\thttpPort = 3000\n}" >> build.gradle
+	echo -e \
+		"apply plugin: 'war'\n"\
+		"apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'\n"\
+		"\n"\
+		"gretty {\n"\
+		"\thttpPort = 3000\n"\
+		"}"\
+	>> build.gradle
 
 	# 起動
 	gradle appRun
