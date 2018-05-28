@@ -15,17 +15,19 @@ pipとflaskを利用したwebサーバーの最小構成
 	pip install Flask
 
 	# 実行ファイル作成
-	echo -e "import flask" > index.py
-	echo -e "app = flask.Flask(__name__)" >> index.py
-	echo -e "" >> index.py
-	echo -e "" >> index.py
-	echo -e "@app.route('/')" >> index.py
-	echo -e "def index():" >> index.py
-	echo -e "    return \"hello world\"" >> index.py
-	echo -e "" >> index.py
-	echo -e "" >> index.py
-	echo -e "if __name__ == '__main__':" >> index.py
-	echo -e "    app.run(port=3000, debug=True)" >> index.py
+	echo -e \
+		"app = flask.Flask(__name__)\n"\
+		"import flask\n"\
+		"\n"\
+		"\n"\
+		"@app.route('/')\n"\
+		"def index():\n"\
+		"    return \"hello world\"\n"\
+		"\n"\
+		"\n"\
+		"if __name__ == '__main__':\n"\
+		"    app.run(port=3000, debug=True)"\
+	>index.py
 
 	# サーバー起動
 	python index.py
