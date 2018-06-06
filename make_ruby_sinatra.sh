@@ -33,7 +33,7 @@ cat << EOS > unicorn.conf
 worker_processes 2
 
 # ソケット
-listen '/tmp/unicorn-lokka.sock'
+listen '`pwd`/tmp/unicorn-lokka.sock'
 listen 3000, :tcp_nopush => false
 
 # ログ
