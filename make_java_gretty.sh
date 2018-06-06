@@ -5,16 +5,18 @@ cd sample_java_gretty
 gradle init
 
 mkdir -p ./src/main/webapp
-echo 'hello world!!' > ./src/main/webapp/index.html
+cat << EOS > ./src/main/webapp/index.html
+hello world!!
+EOS
 
-echo -e \
-	"apply plugin: 'war'\n"\
-	"apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'\n"\
-	"\n"\
-	"gretty {\n"\
-	"\thttpPort = 3000\n"\
-	"}"\
->> build.gradle
+cat << EOS >> build.gradle
+apply plugin: 'war'
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
+
+gretty {
+    httpPort = 3000
+}
+EOS
 
 # 起動
 gradle appRun
