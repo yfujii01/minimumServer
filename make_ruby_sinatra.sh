@@ -3,9 +3,9 @@ mkdir sample_ruby_sinatra
 cd sample_ruby_sinatra
 
 # gem install
-gem install sinatra
-gem install unicorn
-gem install bundler
+#gem install sinatra
+#gem install unicorn
+#gem install bundler
 
 bundle init
 
@@ -33,7 +33,7 @@ cat << EOS > unicorn.conf
 worker_processes 2
 
 # ソケット
-listen '/tmp/unicorn-lokka.sock'
+listen 'tmp/unicorn-lokka.sock'
 listen 3000, :tcp_nopush => false
 
 # ログ
@@ -42,7 +42,8 @@ stdout_path 'log/unicorn.log'
 EOS
 
 mkdir log
+mkdir tmp
 
 # サーバー起動
-sudo unicorn -c unicorn.conf
+unicorn -c unicorn.conf
 
