@@ -18,7 +18,7 @@ cd ${appname}
 
 bundle init
 
-cat << EOS > Gemfile
+cat << EOS >> Gemfile
 gem "sinatra"
 gem "unicorn"
 gem "json"
@@ -72,7 +72,8 @@ mkdir tmp
 cat << EOS > start.sh
 #!/bin/bash
 
-source ~/.bashrc
+export PATH="\$HOME/.anyenv/bin:\$PATH"
+eval "\$(anyenv init -)"
 
 cd \`dirname \$0\`
 bundle exec unicorn -c unicorn.conf
@@ -80,9 +81,42 @@ EOS
 
 chmod +x start.sh
 
+cat << EOS > ${appname}.service
+[Unit]
+Description = ${appname}
+
+[Service]
+ExecStart=`pwd`/start.sh
+Restart=always
+Type=simple
+User=`whoami`
+
+[Install]
+WantedBy=multi-user.target
+EOS
+
 # 初期ディレクトリに戻る
 cd ..
 
-# サーバー起動
-./${appname}/start.sh
+echo 'アプリケーションが作成されました'
+echo '--------------------'
+echo 'サーバーを起動する'
+echo './'${appname}'/start.sh'
+echo 'サービスを登録する'
+echo 'sudo cp ./'${appname}'/'${appname}'.service /etc/systemd/system/'
+echo 'sudo systemctl daemon-reload'
+echo 'sudo systemctl start '${appname}
+echo 'サービスの状態を確認する'
+echo 'systemctl status '${appname}
+echo 'journalctl -xe'
+echo 'サービスを自動起動する'
+echo 'sudo systemctl is-enabled '${appname}
+echo 'sudo systemctl enable '${appname}
+echo 'sudo systemctl disable '${appname}
+echo 'サービスを削除する'
+echo 'sudo systemctl stop '${appname}
+echo 'sudo systemctl daemon-reload'
+echo 'sudo rm /etc/systemd/system/'${appname}'.service' 
+echo '--------------------'
+
 
