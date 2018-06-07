@@ -1,6 +1,17 @@
-rm -rf sample_ruby_sinatra
-mkdir sample_ruby_sinatra
-cd sample_ruby_sinatra
+#/bin/bash
+
+if [ $# -ne 2 ]; then
+  echo "引数1にapp nameを入れてください"
+  echo "引数2にport番号を入れてください"
+  return
+fi
+
+appname=$1
+appport=$2
+
+rm -rf ${appname}
+mkdir ${appname}
+cd ${appname}
 
 #gem install
 #gem install bundler
@@ -48,7 +59,7 @@ worker_processes 2
 
 # ソケット
 listen '`pwd`/tmp/unicorn-lokka.sock'
-listen 3000, :tcp_nopush => false
+listen ${appport}, :tcp_nopush => false
 
 # ログ(ログに出力する場合は以下のコメントを外す)
 # stderr_path 'log/unicorn.log'
@@ -69,6 +80,9 @@ EOS
 
 chmod +x start.sh
 
+# 初期ディレクトリに戻る
+cd ..
+
 # サーバー起動
-./start.sh
+./${appname}/start.sh
 
