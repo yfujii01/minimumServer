@@ -11,3 +11,5 @@ shellを実行してください
 
 curl -L raw.github.com/yfujii01/minimumServer/master/ruby_sinatra_unicorn/make.sh | sh -s -- sample_rubyapp 3000
 
+curl -L raw.github.com/yfujii01/minimumServer/master/ruby_sinatra_thin/make.sh | sh -s -- sample_rubyapp 3000
+
