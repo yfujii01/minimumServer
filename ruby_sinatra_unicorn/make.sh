@@ -40,6 +40,8 @@ get '/abc' do
   "ABC Hello World!!"
 end
 
+# 実行例
+# curl -H 'Content-Type:application/json' -d '{"asd":"wet"}' localhost:3000/posttest
 post '/posttest' do
   params = JSON.parse request.body.read
   puts params
@@ -72,8 +74,7 @@ mkdir tmp
 cat << EOS > start.sh
 #!/bin/bash
 
-export PATH="\$HOME/.anyenv/bin:\$PATH"
-eval "\$(anyenv init -)"
+export PATH="$PATH"
 
 cd \`dirname \$0\`
 bundle exec unicorn -c unicorn.conf
@@ -95,28 +96,37 @@ User=`whoami`
 WantedBy=multi-user.target
 EOS
 
+cat << EOS > serviceMemo.txt
+アプリケーションが作成されました
+--------------------
+#サーバーを起動する
+./${appname}/start.sh
+
+#サービスを削除する
+sudo systemctl stop ${appname}
+sudo systemctl daemon-reload
+sudo rm /etc/systemd/system/${appname}.service
+
+#サービスを登録する
+sudo cp ./${appname}/${appname}.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl start ${appname}
+
+#サービスの状態を確認する
+systemctl status ${appname}
+journalctl -xe
+
+#サービスを自動起動する
+sudo systemctl is-enabled ${appname}
+sudo systemctl enable ${appname}
+sudo systemctl disable ${appname}
+--------------------
+#動作確認する
+curl -H 'Content-Type:application/json' -d '{"asd":"wet"}' localhost:3000/posttest
+EOS
+
+cat serviceMemo.txt
+
 # 初期ディレクトリに戻る
 cd ..
-
-echo 'アプリケーションが作成されました'
-echo '--------------------'
-echo 'サーバーを起動する'
-echo './'${appname}'/start.sh'
-echo 'サービスを登録する'
-echo 'sudo cp ./'${appname}'/'${appname}'.service /etc/systemd/system/'
-echo 'sudo systemctl daemon-reload'
-echo 'sudo systemctl start '${appname}
-echo 'サービスの状態を確認する'
-echo 'systemctl status '${appname}
-echo 'journalctl -xe'
-echo 'サービスを自動起動する'
-echo 'sudo systemctl is-enabled '${appname}
-echo 'sudo systemctl enable '${appname}
-echo 'sudo systemctl disable '${appname}
-echo 'サービスを削除する'
-echo 'sudo systemctl stop '${appname}
-echo 'sudo systemctl daemon-reload'
-echo 'sudo rm /etc/systemd/system/'${appname}'.service' 
-echo '--------------------'
-
 
