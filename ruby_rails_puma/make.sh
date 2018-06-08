@@ -17,26 +17,30 @@ cd ${appname}
 
 bundle install
 
+# 実行モードを変更
+sed -i 's/^environment ENV.fetch("RAILS_ENV") { "development" }/#environment ENV.fetch("RAILS_ENV") { "development" }/' config/puma.rb
+
+cat << EOS >> config/puma.rb
+environment ENV.fetch("RAILS_ENV") { "production" }
+EOS
+
 # HTTPS設定
 cat << EOS >> config/puma.rb
-if "development" == ENV.fetch("RAILS_ENV") { "development" }
-  ssl_bind '0.0.0.0', '$appport', {
-    key: "./ssl/server.key",
-    cert: "./ssl/server.crt",
-    verify_mode: "none"
-  }
-end
+ssl_bind '0.0.0.0', '$appport', {
+  key: "./ssl/server.key",
+  cert: "./ssl/server.crt",
+  verify_mode: "none"
+}
 EOS
 
 # HTTPポートをふさぐ
-sed -i 's/^port/#port/' config/puma.rb
+#sed -i 's/^port/#port/' config/puma.rb
 
 # SSL証明書作成
 mkdir ssl
 cd ssl
 curl -L raw.github.com/yfujii01/setting_oreoreSSL/master/make.sh | sh
 cd ..
-
 
 
 cat << EOS > start.sh
@@ -86,6 +90,11 @@ sudo systemctl disable ${appname}
 curl -k -H 'Content-Type:application/json' -d '{"asd":"wet"}' https://localhost:${appport}/
 EOS
 
+# git commitしておく
+git add .
+git commit -m "${appname} create"
+
+# 操作方法を表示
 cat serviceMemo.txt
 
 # 初期フォルダに戻る

@@ -51,8 +51,8 @@ class Application < Sinatra::Base
     super do |server|
       server.ssl = true
       server.ssl_options = {
-        :cert_chain_file  => File.dirname(__FILE__) + "/server.crt",
-        :private_key_file => File.dirname(__FILE__) + "/server.key",
+        :cert_chain_file  => File.dirname(__FILE__) + "/ssl/server.crt",
+        :private_key_file => File.dirname(__FILE__) + "/ssl/server.key",
         :verify_peer      => false
       }
     end
@@ -63,7 +63,10 @@ end
 EOS
 
 #オレオレ証明書作成
+mkdir ssl
+cd ssl
 curl -L raw.github.com/yfujii01/setting_oreoreSSL/master/make.sh | sh
+cd ..
 
 
 cat << EOS > start.sh
@@ -75,6 +78,9 @@ EOS
 
 chmod +x start.sh
 
+#service登録用のひな形作成
+mkdir service
+cd service
 cat << EOS > ${appname}.service
 [Unit]
 Description = ${appname}
@@ -111,8 +117,26 @@ sudo systemctl disable ${appname}
 #動作確認する
 curl -k -H 'Content-Type:application/json' -d '{"asd":"wet"}' https://localhost:${appport}/posttest
 EOS
+cd ..
 
-cat serviceMemo.txt
+#git登録
+git init
+cat << EOS > .gitignore
+service/
+ssl/
+start.sh
+EOS
+cat << EOS > README.md
+# ${appname}
+
+## How to Exec
+
+bundle exec ruby app.rb
+EOS
+git add .
+git commit -m '${appname} create!'
+
+cat ./service/serviceMemo.txt
 
 # 初期ディレクトリに戻る
 cd ..
